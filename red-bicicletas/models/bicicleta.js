@@ -15,7 +15,7 @@ Bicicleta.add = function(aBici){
 }
 
 Bicicleta.findById = function(aBiciId){
-    var aBici = Bicicleta.allBicis.filter(x => x.id == aBiciId);
+    var aBici = Bicicleta.allBicis.find(x => x.id == aBiciId);
     if(aBici)
         return aBici;
     else
@@ -31,8 +31,8 @@ Bicicleta.removeById = function(aBiciId){
     }
 }
 
-var a = new Bicicleta(1, 'rojo', 'urbana', [4.648874, -74.087404]);
-var b = new Bicicleta(2, 'blanca', 'urbana', [4.648874, -74.088404]);
+var a = new Bicicleta(1, 'rojo', 'urbana', [4.648874, -74.086404]);
+var b = new Bicicleta(2, 'blanca', 'urbana', [4.658874, -74.086404]);
 
 Bicicleta.add(a);
 Bicicleta.add(b);
