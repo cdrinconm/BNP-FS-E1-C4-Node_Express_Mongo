@@ -86,7 +86,7 @@ usuarioSchema.methods.enviar_email_bienvenida = function (cb) {
             console.log('A verification email has been sent to ' + email_destination + '.');
         });
     });
-};/*
+};
 
 usuarioSchema.methods.resetPassword = function(cb) {
     const token = new Token({_userId: this.id, token: crypto.randomBytes(16).toString('hex')});
@@ -103,13 +103,13 @@ usuarioSchema.methods.resetPassword = function(cb) {
 
         mailer.sendMail(mailOptions, function(err) {
             if (err) { return cb(err); }
-            console.log('An email to reset the password was sent to' + email_destination + '.');
+            console.log('An email to reset the password was sent to ' + email_destination + '.');
         });
 
         cb(null);
     });
 };
-
+/*
 usuarioSchema.statics.findOneOrCreateByGoogle = function findOneOrCreate(condition,callback) {
     const self = this;
     console.log(condition);
