@@ -5,6 +5,10 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
+L.marker([4.678874, -74.086404]).addTo(map);
+L.marker([4.688874, -74.086404]).addTo(map);
+L.marker([4.698874, -74.086504]).addTo(map);
+
 $.ajax({
     dataType: "json",
     url: "api/bicicletas",

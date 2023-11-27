@@ -1,0 +1,35 @@
+extends ../layout
+
+block content
+    #confirmation
+    h1.text-white Confirmar Usuario
+    br
+    br
+    if !errors.token
+        form(action=`/confirmation/${token}`, method='post')
+            .form-group
+                label.text-white(for='id') ID:
+                input#id.form-control(type='text', readonly, name='id', value=model.id, class=errors.id ? 'is-invalid' : '')
+                br
+                label.text-white(for='nombre') Nombre:
+                input#nombre.form-control(type='text', readonly, name='nombre', value=model.nombre, class=errors.nombre ? 'is-invalid' : '')
+                br
+                label.text-white(for='email') Email:
+                input#email.form-control(type='email', readonly, name='email', value=model.email, class=errors.email ? 'is-invalid' : '')
+                br
+                label.text-white(for='password') Password:
+                input#password.form-control(type='password', name='password', required='' , class=errors.password ? 'is-invalid' : '')
+                if errors.password
+                    small#passwordHelp.text-danger
+                        = errors.password.message
+                br
+                label.text-white(for='confirmPassword') Confirmar Password:
+                input#confirmPassword.form-control(type='password', name='confirmPassword', required='' , class=errors.confirmPassword ? 'is-invalid' : '')
+                if errors.confirmPassword
+                    small#confirmPasswordHelp.text-danger
+                        = errors.confirmPassword.message
+                br
+                input#edit.btn.btn-light(type='submit', value='Confirmar')
+    else
+        small#tokenHelp.text-danger
+            = errors.token.message

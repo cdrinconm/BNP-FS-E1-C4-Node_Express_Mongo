@@ -1,0 +1,24 @@
+extends ../layout
+
+block content
+      body
+        .container
+          .row
+            .col-sm-9.col-md-7.col-lg-5.mx-auto
+              .card.card-signin.my-5
+                .card-body
+                  h1.card-title.text-center Log In
+                  br
+                  if info && info.message
+                    div.alert.alert-danger
+                        = info.message
+                  form.form-signin(action='/login', method='post')
+                    .form-label-group
+                      input#inputEmail.form-control(type='email' placeholder='Email' required='' autofocus='' name='username')
+                      label(for='inputEmail') Nombre del usuario
+                    .form-label-group
+                      input#inputPassword.form-control(type='password' placeholder='Password' required='' name='password')
+                      label(for='inputPassword') Contrase&ntilde;a
+                    a.card-title.text-center(href='/auth/google') Iniciar Sesi&oacute;n con Google
+                    button.btn.btn-lg.btn-primary.btn-block.text-uppercase(type='submit') Iniciar Sesi&oacute;n
+                a.card-title.text-center(href='/forgotPassword') &iquest;Olvid&oacute; su contrase&ntilde;a?
