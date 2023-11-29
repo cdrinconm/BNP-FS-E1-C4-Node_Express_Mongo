@@ -3,26 +3,11 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-const jwt = require('jsonwebtoken');
 const passport = require('./config/passport');
 const session = require('express-session');
-//const mongoDbStore = require('connect-mongodb-session')(session);
-/*
-let store;
-if (process.env.NODE_ENV === 'development') {
-    store = new session.MemoryStore;
-}
-else {
-    store = new mongoDbStore({
-        uri: process.env.MONGO_URI,
-        collection: 'sessions'
-    });
-    store.on('error', function (error) {
-        assert.ifError(error);
-        assert.ok(false);
-    });
-}
-*/
+
+const MongoDBStore = require('connect-mongodb-session')(session);
+const jwt = require('jsonwebtoken');
 var indexRouter = require('./routes/index');
 var usuariosRouter = require('./routes/usuarios');
 var tokenRouter = require('./routes/token')
@@ -32,10 +17,23 @@ var usuariosAPIRouter = require('./routes/api/usuarios');
 var authAPIRouter = require('./routes/api/auth');
 const Usuario = require('./models/usuario');
 const token = require ('./models/token');
-require ('dotenv'). config ()
-const dotenv = require ('dotenv');
+require ('newrelic');
+require ('dotenv'). config ();
 
-const store = new session.MemoryStore;
+let store;
+if (process.env.NODE_ENV === 'development') {
+  store = new session.MemoryStore();
+} else {
+  store = new MongoDBStore({
+      uri: process.env.MONGO_URI,
+      collection: 'sessions',
+  });
+  store.on('error', function(error) {
+      assert.ifError(error);
+      assert.ok(false);
+  });
+}
+
 
 var app = express();
 app.set('secretKey', 'jwt_key_password');
@@ -50,8 +48,10 @@ app.use(session({
 
 var mongoose = require('mongoose');
 
-var mongoDB = 'mongodb://127.0.0.1/red_bicicletas';
-mongoose.connect(mongoDB, { useNewUrlParser: true});
+//var mongoDB = 'mongodb://127.0.0.1/red_bicicletas';
+//var mongoDB = 'mongodb+srv://Admin:Admin123@atlascluster.ojpxhgf.mongodb.net/red_bicicletas';
+mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true});
+//mongoose.connect(mongoDB, { useNewUrlParser: true});
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error: '));
@@ -139,6 +139,31 @@ app.use('/bicicletas', loggedIn, bicicletasRouter);
 app.use('/api/auth', authAPIRouter);
 app.use('/api/bicicletas', validarUsuario, bicicletasAPIRouter);
 app.use('/api/usuarios', usuariosAPIRouter);
+
+app.use('/privacy_policy', function (req, res) {  
+  res.sendFile('public/privacy_policy.html');
+});
+
+
+app.get('/auth/google',
+	passport.authenticate('google', { scope: [
+          'https://www.googleapis.com/auth/plus.login',
+          'https://www.googleapis.com/auth/plus.profile.emails.read' ] } ));
+
+app.get('/auth/google/callback',passport.authenticate('google', {
+      successRedirect: '/',
+      failureRedirect: '/error'
+  })
+);
+
+app.get('/auth/facebook', passport.authenticate('facebook'));
+app.get('/auth/facebook/callback', passport.authenticate('facebook', {
+    successRedirect: '/',
+    failureRedirect: '/login' 
+  })
+);
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

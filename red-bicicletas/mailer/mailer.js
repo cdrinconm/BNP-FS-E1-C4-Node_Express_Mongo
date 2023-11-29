@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 
 const sgTransport = require('nodemailer-sendgrid-transport');
-/*
+
 let mailConfig;
 
 if (process.env.NODE_ENV === 'production') {
@@ -35,7 +35,7 @@ if (process.env.NODE_ENV === 'production') {
         };
     }
 }
-*/
+/*
 const mailConfig = {
     host: 'smtp.ethereal.email',
     port: 587,
@@ -43,5 +43,5 @@ const mailConfig = {
         user: 'ashton61@ethereal.email',
         pass: 'ebPctgaf6dUUCSVq6f'
     }
-};
+};*/
 module.exports = nodemailer.createTransport(mailConfig);

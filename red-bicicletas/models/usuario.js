@@ -39,9 +39,9 @@ var usuarioSchema = new Schema({
     verificado: {
         type: Boolean,
         default: false
-    },/*
+    },
     googleId: String,
-	facebookId: String*/
+	facebookId: String
 });
 
 usuarioSchema.plugin(uniqueValidator, {message: 'El {PATH} ya existe con otro usuario'});
@@ -109,7 +109,7 @@ usuarioSchema.methods.resetPassword = function(cb) {
         cb(null);
     });
 };
-/*
+
 usuarioSchema.statics.findOneOrCreateByGoogle = function findOneOrCreate(condition,callback) {
     const self = this;
     console.log(condition);
@@ -127,7 +127,7 @@ usuarioSchema.statics.findOneOrCreateByGoogle = function findOneOrCreate(conditi
                 values.email = condition.emails[0].value;
                 values.nombre = condition.displayName || 'SIN NOMBRE';
                 values.verificado = true;
-                values.password = condition._json.etag;
+                values.password = crypto.randomBytes(16).toString('hex');//condition._json.etag;
                 console.log('------------VALUES----------');
                 console.log(values);
                 self.create(values, (err, result) => {
@@ -166,5 +166,4 @@ usuarioSchema.statics.findOneOrCreateByFacebook = function findOneOrCreateByFace
         });
 };
 
-*/
 module.exports = mongoose.model('Usuario', usuarioSchema);
